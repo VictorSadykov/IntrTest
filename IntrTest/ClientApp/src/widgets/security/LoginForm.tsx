@@ -1,3 +1,4 @@
+import { LoginDTO } from "models/auth"
 import { AuthProps } from "models/props"
 import { Button } from "primereact/button"
 import { Card } from "primereact/card"
@@ -6,10 +7,19 @@ import { Password } from "primereact/password"
 import React, { useState } from "react"
 import { Controller, useForm } from "react-hook-form";
 
-export const LoginForm = ({formInfo, toggleCard, getFormErrorMessage} : AuthProps) => {
+export const LoginForm = ({formInfo, toggleCard, getFormErrorMessage, isLoading, authFunc} : AuthProps) => {
   const { control, formState: { errors }, handleSubmit } = formInfo;
+  
+  const onSubmit = async(data) => {
 
-  han
+    let loginData: LoginDTO = {
+      login: data.login,
+      password: data.password
+    }
+    
+    await authFunc(loginData)
+  }
+
 
   return (
     <form>
@@ -50,8 +60,8 @@ export const LoginForm = ({formInfo, toggleCard, getFormErrorMessage} : AuthProp
         />
       </div>
       <div className="flex flex-column">
-        <Button className="mb-1" label="Войти" onClick={handleSubmit(onSumbit)}/>
-        <Button outlined label="Регистрация" onClick={() => toggleCard()}/>
+        <Button loading={isLoading} className="mb-1" label="Войти" onClick={handleSubmit(onSubmit)}/>
+        <Button disabled={isLoading} outlined label="Регистрация" onClick={() => toggleCard()}/>
       </div>
     </form>
   )

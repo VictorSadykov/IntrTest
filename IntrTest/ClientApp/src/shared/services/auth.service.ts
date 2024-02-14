@@ -8,11 +8,11 @@ import tokenService from "./token.service";
 class AuthService {
 
   async login({
-    userName,
+    login,
     password,
   }: LoginDTO): Promise<AxiosResponse<TokenResponceDTO>> {
     return $api.post<TokenResponceDTO>(`${API_AUTH}${AUTH_LOGIN_ROUTE}`, {
-      userName,
+      login,
       password,
     });
   }

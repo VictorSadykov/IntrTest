@@ -1,12 +1,17 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import "../css/LoginPage.css"
 import { LoginForm, RegistrationForm } from "widgets/index"
 import { useForm } from "react-hook-form";
 import { Card } from "primereact/card";
+import { Context } from "index";
+import { LoginDTO, RegisterDTO } from "models/auth";
 
 export const LoginPage = () => {
   const formInfo = useForm();
   const [isLoginToShow, setIsLoginToShow] = useState<boolean>()
+  const [isLoading, setIsLoading] = useState<boolean>()
+
+  const {store} = useContext(Context)
 
   const toggleCard = () => {
     setIsLoginToShow((prev) => {
@@ -17,10 +22,29 @@ export const LoginPage = () => {
     formInfo.clearErrors()
   }
 
+  const auth = async(authData: LoginDTO | RegisterDTO) => {
+    setIsLoading(true)
+
+    let loginData: LoginDTO = {
+      login: data.login,
+      password: data.password
+    }
+
+    try {
+      await store.login(loginData)
+    } catch (error) {
+      console.error(error)
+    }
+
+    setIsLoading(false)
+  }
+
   const getFormErrorMessage = (name: string) : React.JSX.Element => {
     const errors = formInfo.formState.errors;
     return errors[name] ? <small className="p-error">{(errors as any)[name].message}</small> : <small className="p-error">&nbsp;</small>;
   }
+
+  
 
   return (
     <div className="login_card flex flex justify-content-center align-items-center">
@@ -30,12 +54,15 @@ export const LoginPage = () => {
             formInfo={formInfo}
             toggleCard={toggleCard}
             getFormErrorMessage={getFormErrorMessage}
-            
+            isLoading={isLoading}
+            authFunc={auth}
           /> :
           <RegistrationForm
             formInfo={formInfo}
             toggleCard={toggleCard}
             getFormErrorMessage={getFormErrorMessage}
+            isLoading={isLoading}
+            authFunc={auth}
           />
         }
       </Card>

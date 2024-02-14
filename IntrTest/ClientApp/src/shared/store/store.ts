@@ -15,8 +15,8 @@ export default class Store {
     this.isAuth = bool
   }
 
-  async login({userName, password}: LoginDTO){
-    const response = await authService.login({userName, password})
+  async login({login, password}: LoginDTO){
+    const response = await authService.login({login, password})
     tokenService.setAccessToken(response.data.accessToken)
     tokenService.setRefreshToken(response.data.refreshToken)
     this.setAuth(true)

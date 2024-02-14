@@ -1,3 +1,4 @@
+import { RegisterDTO } from "models/auth";
 import { AuthProps } from "models/props";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card"
@@ -6,8 +7,26 @@ import { Password } from "primereact/password";
 import React from "react"
 import { Controller, useForm } from "react-hook-form"
 
-export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage }: AuthProps) => {
+export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, authFunc }: AuthProps) => {
   const { control, formState: { errors }, handleSubmit } = formInfo;
+
+  const onSubmit = async(data) => {
+    setIsLoading(true)
+
+    let registerData: RegisterDTO = {
+      login: data.login,
+      password: data.password,
+      passwordReply: data.passwordReply
+    }
+
+    try {
+
+    } catch (error) {
+
+    }
+
+    setIsLoading(false)
+  }
 
   return (
     <form>
@@ -66,8 +85,8 @@ export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage }: 
         />
       </div>
       <div className="flex flex-column">
-        <Button className="mb-1" label="Зарегистрироваться" onClick/>
-        <Button outlined label="Авторизация" onClick={() => toggleCard()} />
+        <Button loading={isLoading} className="mb-1" label="Зарегистрироваться" onClick={handleSubmit(onSubmit)}/>
+        <Button disabled={isLoading} outlined label="Авторизация" onClick={() => toggleCard()} />
       </div>
     </form>
   )
