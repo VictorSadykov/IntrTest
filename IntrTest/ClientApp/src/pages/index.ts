@@ -1,2 +1,2 @@
 export {ShopPage} from "./ShopPage"
-export {IndexPage} from "./IndexPage"
+export {LoginPage} from "./security/LoginPage"

@@ -1,4 +1,5 @@
-﻿using IntrTest.Data.Models.Interfaces;
+﻿using IntrTest.Data.Models.Database;
+using IntrTest.Data.Models.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +12,12 @@ namespace IntrTest.Data.Context
 {
     public class PostgreContext : IdentityDbContext
     {
+        public DbSet<Coin> Coins { get; set; }
+        public DbSet<UserCoin> UserCoins { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserDrink> UserDrinks { get; set; }
+        public DbSet<Drink> Drinks { get; set; }
+
         public PostgreContext(DbContextOptions<PostgreContext> options) : base(options) { }
 
         public async override Task<int> SaveChangesAsync(CancellationToken ct = default)
