@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { LoginDTO } from 'models/auth';
+import { LoginDTO, RegisterDTO } from 'models/auth';
 import authService from 'shared/services/auth.service';
 import tokenService from 'shared/services/token.service';
 
@@ -15,11 +15,20 @@ export default class Store {
     this.isAuth = bool
   }
 
-  async login({login, password}: LoginDTO){
-    const response = await authService.login({login, password})
+  async login(data: LoginDTO){
+    const response = await authService.login(data)
     tokenService.setAccessToken(response.data.accessToken)
     tokenService.setRefreshToken(response.data.refreshToken)
     this.setAuth(true)
+  }
+
+  async registerUser(data: RegisterDTO) {
+    try {
+      const response = await authService.registerUser(data)
+      return response
+    } catch (ex) {
+      console.error(ex)
+    }
   }
 
   async logout() {

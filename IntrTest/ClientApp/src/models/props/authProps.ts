@@ -8,5 +8,5 @@ export interface AuthProps {
   toggleCard: () => void
   getFormErrorMessage: (str: string) => React.JSX.Element
   isLoading: boolean
-  authFunc: (authData: LoginDTO | RegisterDTO) => Promise<void>
+  authFunc: (authData: LoginDTO | RegisterDTO, isLoginFunc: boolean) => Promise<void>
 }

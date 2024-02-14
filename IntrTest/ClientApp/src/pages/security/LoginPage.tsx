@@ -22,16 +22,14 @@ export const LoginPage = () => {
     formInfo.clearErrors()
   }
 
-  const auth = async(authData: LoginDTO | RegisterDTO) => {
+  const auth = async(authData: LoginDTO | RegisterDTO, isLoginFunc: boolean) => {
     setIsLoading(true)
-
-    let loginData: LoginDTO = {
-      login: data.login,
-      password: data.password
-    }
-
     try {
-      await store.login(loginData)
+      if (isLoginFunc) {
+        await store.login(authData as LoginDTO) 
+      } else {
+        await store.registerUser(authData as RegisterDTO)
+      }
     } catch (error) {
       console.error(error)
     }

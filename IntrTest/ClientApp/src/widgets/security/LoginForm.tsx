@@ -17,7 +17,7 @@ export const LoginForm = ({formInfo, toggleCard, getFormErrorMessage, isLoading,
       password: data.password
     }
     
-    await authFunc(loginData)
+    await authFunc(loginData, true)
   }
 
 
