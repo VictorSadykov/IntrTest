@@ -7,11 +7,10 @@ import { Password } from "primereact/password";
 import React from "react"
 import { Controller, useForm } from "react-hook-form"
 
-export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, authFunc }: AuthProps) => {
+export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, isLoading, authFunc }: AuthProps) => {
   const { control, formState: { errors }, handleSubmit } = formInfo;
 
-  const onSubmit = async(data) => {
-    setIsLoading(true)
+  const onSubmit = async (data) => {   
 
     let registerData: RegisterDTO = {
       login: data.login,
@@ -19,13 +18,7 @@ export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, au
       passwordReply: data.passwordReply
     }
 
-    try {
-
-    } catch (error) {
-
-    }
-
-    setIsLoading(false)
+    await authFunc(registerData, false)
   }
 
   return (
@@ -51,7 +44,7 @@ export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, au
         <Controller
           name="password"
           control={control}
-          rules={{ required: 'Заполните обязательное поле', minLength: 6 }}
+          rules={{ required: 'Заполните обязательное поле', minLength: { value: 6, message: "Пароль должен состоять минимум 6 символов" } }}
           render={({ field, fieldState }) => {
             return <>
               <Password
@@ -69,7 +62,14 @@ export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, au
         <Controller
           name="passwordReply"
           control={control}
-          rules={{ required: 'Заполните обязательное поле' }}
+          rules={{
+            required: 'Заполните обязательное поле',
+            validate: (val: string) => {
+              if (formInfo.watch('password') !== val) {
+                return 'Пароли не совпадают'
+              }
+            }
+          }}
           render={({ field, fieldState }) => {
             return <>
               <Password
@@ -85,7 +85,7 @@ export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, au
         />
       </div>
       <div className="flex flex-column">
-        <Button loading={isLoading} className="mb-1" label="Зарегистрироваться" onClick={handleSubmit(onSubmit)}/>
+        <Button loading={isLoading} className="mb-1" label="Зарегистрироваться" onClick={handleSubmit(onSubmit)} />
         <Button disabled={isLoading} outlined label="Авторизация" onClick={() => toggleCard()} />
       </div>
     </form>

@@ -1,17 +1,18 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useRef, useState } from "react"
 import "../css/LoginPage.css"
 import { LoginForm, RegistrationForm } from "widgets/index"
 import { useForm } from "react-hook-form";
 import { Card } from "primereact/card";
 import { Context } from "index";
 import { LoginDTO, RegisterDTO } from "models/auth";
+import { Toast } from "primereact/toast";
 
 export const LoginPage = () => {
   const formInfo = useForm();
   const [isLoginToShow, setIsLoginToShow] = useState<boolean>()
   const [isLoading, setIsLoading] = useState<boolean>()
-
-  const {store} = useContext(Context)
+  const toast = useRef(null)
+  const { store } = useContext(Context)
 
   const toggleCard = () => {
     setIsLoginToShow((prev) => {
@@ -22,29 +23,56 @@ export const LoginPage = () => {
     formInfo.clearErrors()
   }
 
-  const auth = async(authData: LoginDTO | RegisterDTO, isLoginFunc: boolean) => {
+  const auth = async (authData: LoginDTO | RegisterDTO, isLoginFunc: boolean) => {
     setIsLoading(true)
-    try {
-      if (isLoginFunc) {
-        await store.login(authData as LoginDTO) 
-      } else {
-        await store.registerUser(authData as RegisterDTO)
-      }
-    } catch (error) {
-      console.error(error)
-    }
 
+    if (isLoginFunc) {
+      await login(authData as LoginDTO)
+    } else {
+      await register(authData as RegisterDTO)
+    }
+   
     setIsLoading(false)
   }
 
-  const getFormErrorMessage = (name: string) : React.JSX.Element => {
+  const register = async (authData: RegisterDTO) => {
+    try {
+      const resp = await store.registerUser(authData as RegisterDTO)
+      
+      if (resp.status === 200) {
+        toast.current.show({severity: "success", summary: "Вы успешно зарегестрировались"})
+        toggleCard()
+      }
+    } catch (error) {
+      console.error(error)
+      
+      if (error?.data?.regError[0] === "Пользователь с таким логином уже существует") {
+        toast.current.show({severity: "error", summary: error?.data?.regError[0]})
+      } else {
+        toast.current.show({severity: "error", summary: "Ошибка на стороне сервера"})
+      }
+    }
+  }
+
+  const login = async (authData: LoginDTO) => {
+    try {
+      const resp = await store.login(authData as LoginDTO)
+      console.log(resp)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const getFormErrorMessage = (name: string): React.JSX.Element => {
     const errors = formInfo.formState.errors;
     return errors[name] ? <small className="p-error">{(errors as any)[name].message}</small> : <small className="p-error">&nbsp;</small>;
   }
 
-  
+
 
   return (
+    <>
+    <Toast ref={toast} position="bottom-right"/>
     <div className="login_card flex flex justify-content-center align-items-center">
       <Card className="p-3" style={{ minWidth: '500px' }} title={isLoginToShow ? "Авторизация" : "Регистрация"}>
         {isLoginToShow ?
@@ -64,6 +92,7 @@ export const LoginPage = () => {
           />
         }
       </Card>
-    </div>
+    </div>    
+    </>
   )
 }

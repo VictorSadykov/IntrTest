@@ -1,10 +1,14 @@
+import { AxiosError } from 'axios';
 import { makeAutoObservable } from 'mobx'
 import { LoginDTO, RegisterDTO } from 'models/auth';
+import { MutableRefObject } from 'react';
 import authService from 'shared/services/auth.service';
 import tokenService from 'shared/services/token.service';
+import {Toast} from 'primereact/toast'
 
 export default class Store {
   isAuth = false;
+  globalToast = null;
   
 
   constructor() {
@@ -13,6 +17,10 @@ export default class Store {
 
   setAuth(bool: boolean) {
     this.isAuth = bool
+  }
+
+  setGlobalToast(toast: MutableRefObject<Toast>) {
+    this.globalToast = toast
   }
 
   async login(data: LoginDTO){
@@ -27,7 +35,7 @@ export default class Store {
       const response = await authService.registerUser(data)
       return response
     } catch (ex) {
-      console.error(ex)
+      throw (ex as AxiosError)?.response
     }
   }
 
