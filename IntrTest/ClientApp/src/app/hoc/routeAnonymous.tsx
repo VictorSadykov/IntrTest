@@ -6,8 +6,11 @@ import { BASE_URL } from "shared/routes/apiRoutes/routes"
 
 export const RouteAnonymous = ({ jsx }) => {
   const { store } = useContext(Context)
+  console.log(2)
+  console.log(store.isAuth)
 
   if (store.isAuth) {
+    console.log("NAVIGATE")
     return <Navigate replace to={BASE_URL} />
   } else {
     return jsx

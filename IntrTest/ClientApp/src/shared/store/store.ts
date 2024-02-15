@@ -9,6 +9,7 @@ import {Toast} from 'primereact/toast'
 export default class Store {
   isAuth = false;
   globalToast = null;
+  isLoading = true;
   
 
   constructor() {
@@ -21,6 +22,10 @@ export default class Store {
 
   setGlobalToast(toast: MutableRefObject<Toast>) {
     this.globalToast = toast
+  }
+
+  setLoading(bool: boolean) {
+    this.isLoading = bool;
   }
 
   async login(data: LoginDTO){
@@ -46,6 +51,11 @@ export default class Store {
   }
 
   async checkAuth() {
-    this.setAuth(await authService.checkAuth())
+    this.setLoading(true);
+    const r = await authService.checkAuth()
+    console.log(r, "RESP")
+    this.setAuth(r)
+    this.setLoading(false)
+    console.log(this.isAuth)
   }
 }

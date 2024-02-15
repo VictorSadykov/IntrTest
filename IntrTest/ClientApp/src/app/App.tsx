@@ -14,6 +14,7 @@ export const App = () => {
 
   useEffect(() => {
     (async () => {
+      console.log("CHECKING")
       await store.checkAuth()
     })()
   }, [])

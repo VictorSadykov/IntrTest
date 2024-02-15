@@ -6,6 +6,8 @@ import { NAV_LOGIN } from "shared/routes/pageRoutes"
 
 export const RouteAuth = ({ jsx }) => {
   const { store } = useContext(Context)
+  console.log(1)
+  console.log(store.isAuth)
 
   if (!store.isAuth) {
     return <Navigate replace to={NAV_LOGIN} />

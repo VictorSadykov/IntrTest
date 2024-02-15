@@ -84,5 +84,24 @@ namespace IntrTest.Services
             rng.GetBytes(rnd);
             return Convert.ToBase64String(rnd);
         }
+
+        public async Task<(string accessToken, string refreshToken)> UpdateRefreshAccessToken(User user, UserManager<User> userManager)
+        {
+            var claims = await GetClaimByUser(user, userManager);
+            var token = CreateToken(claims);
+            var rToken = GenerateRefreshToken();
+
+            int rTokenValidityInDays;
+            int.TryParse(_config["Jwt:RefreshTokenValidityInDays"], out rTokenValidityInDays);
+
+            user.RefreshToken = rToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(rTokenValidityInDays);
+
+            await userManager.UpdateAsync(user);
+
+            var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return (accessToken, rToken);
+        }
     }
 }

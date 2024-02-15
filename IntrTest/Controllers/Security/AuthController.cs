@@ -66,24 +66,13 @@ namespace IntrTest.Controllers.Security
                         
 
             var jwtService = new JwtService(_config);
-            var claims = await jwtService.GetClaimByUser(user, _userManager);
-
-            var token = jwtService.CreateToken(claims);
-            var refreshToken = jwtService.GenerateRefreshToken();
-
-            int refreshTokenValidityInDays;
-            int.TryParse(_config["Jwt:RefreshTokenValidityInDays"], out refreshTokenValidityInDays);
-
-            user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays);
-
-            await _userManager.UpdateAsync(user);
+            (string accessToken, string refreshToken) = await jwtService.UpdateRefreshAccessToken(user, _userManager);
 
             return Ok(new ResponseTokenDTO
             {
                 UserId = user.Id,
                 Login = model.Login,
-                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                AccessToken = accessToken,
                 RefreshToken = refreshToken
             });
         }
@@ -120,6 +109,40 @@ namespace IntrTest.Controllers.Security
 
             return Ok(ModelState);
            
+        }
+
+        [AllowAnonymous]
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken(TokenValidationDTO tokenModel)
+        {
+            var jwtService = new JwtService(_config);
+            var principal = jwtService.GetClaimDataFromToken(tokenModel.AccessToken);
+
+            if (principal == null)
+            {
+                ModelState.AddModelError("Token error", "Неверный access token");
+                return BadRequest(ModelState);
+            }
+
+            string username = principal.Identity.Name;
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null || user.RefreshToken != tokenModel.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                ModelState.AddModelError("Token error", "Неверный access token");
+                return BadRequest(ModelState);
+            }
+
+            (string accessToken, string refreshToken) = await jwtService.UpdateRefreshAccessToken(user, _userManager);
+
+            return Ok(new ResponseTokenDTO
+            {
+                UserId = user.Id,
+                Login = user.UserName,
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
+            });
+
         }
     }
 }

@@ -18,7 +18,6 @@ export const LoginPage = () => {
     setIsLoginToShow((prev) => {
       return prev ? false : true
     })
-
     formInfo.reset()
     formInfo.clearErrors()
   }
