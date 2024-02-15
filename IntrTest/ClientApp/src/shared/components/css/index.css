@@ -5,3 +5,8 @@
 .layout_namebox {
   cursor: pointer
 }
+
+.layout_exit {
+  font-size: 24px;
+  cursor: pointer
+}

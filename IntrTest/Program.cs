@@ -1,5 +1,6 @@
 using IntrTest.Data.Context;
 using IntrTest.Data.Models.Database;
+using IntrTest.Extensions;
 using IntrTest.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -46,9 +47,11 @@ builder.Services.AddControllersWithViews()
     .AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.Services.AddRepositories();
 
 var app = builder.Build();
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+
 
 if (!app.Environment.IsDevelopment())
 {

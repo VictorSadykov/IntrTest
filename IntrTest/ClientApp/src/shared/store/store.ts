@@ -52,9 +52,14 @@ export default class Store {
 
   async checkAuth() {
     this.setLoading(true);
-    const r = await authService.checkAuth()
-    console.log(3)
-    this.setAuth(r)
-    this.setLoading(false)
+        try {
+            console.log(3)
+            this.setAuth(await authService.checkAuth());
+        }
+        catch (ex) {
+        }
+        finally {
+            this.setLoading(false);
+        }
   }
 }

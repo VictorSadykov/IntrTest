@@ -96,7 +96,7 @@ namespace IntrTest.Controllers.Security
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.FindByIdAsync(username);
+            var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
             {
