@@ -10,5 +10,7 @@ namespace IntrTest.Data.Models.Repositories.Interfaces
     public interface ICoinRepository
     {
         Task<List<Coin>> GetAllAsync();
+        Task UpdateAsync(Coin coin);
+        Task<Coin?> FindByValueAsync(int value);
     }
 }
