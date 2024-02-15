@@ -57,9 +57,16 @@ export const LoginPage = () => {
   const login = async (authData: LoginDTO) => {
     try {
       const resp = await store.login(authData as LoginDTO)
-      console.log(resp)
+      
+      if (store.isAuth) {
+        console.log("SUCCESS")
+      } 
     } catch (error) {
-      console.error(error)
+      if (error?.response?.data?.loginError[0] == "Неверное имя пользователя или пароль") {
+        toast.current.show({severity: "error", summary: error?.response?.data?.loginError[0]})
+      } else {
+        toast.current.show({severity: "error", summary: "Ошибка на стороне сервера"})
+      }
     }
   }
 
