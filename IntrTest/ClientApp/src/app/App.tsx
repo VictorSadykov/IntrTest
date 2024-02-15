@@ -8,17 +8,30 @@ import 'primeicons/primeicons.css';
 import { Context } from 'index';
 import { NAV_LOGIN } from 'shared/routes/pageRoutes';
 import { router } from 'shared/routes/router';
+import { observer } from 'mobx-react-lite';
 
-export const App = () => {
+
+export const App = observer(() => {
   const {store} = useContext(Context)
 
   useEffect(() => {
+
     (async () => {
-      console.log("CHECKING")
       await store.checkAuth()
     })()
+
   }, [])
+  
+  if (store.isLoading) {
+    return <div>Загрузка...</div> //Loader
+  }
+
+  if (!store.isAuth) {
+    <Navigate replace to={NAV_LOGIN} />
+  }
+
   return (
-    <RouterProvider router= {router}/>
-  )
-}
+    <RouterProvider router={router} />
+  );
+
+})
