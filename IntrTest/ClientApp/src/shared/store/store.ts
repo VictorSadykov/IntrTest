@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { makeAutoObservable } from 'mobx'
-import { LoginDTO, RegisterDTO } from 'models/auth';
+import { LoginDTO, RegisterDTO } from 'entities/auth';
 import { MutableRefObject } from 'react';
 import authService from 'shared/services/auth.service';
 import tokenService from 'shared/services/token.service';

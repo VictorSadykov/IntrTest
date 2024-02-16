@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { LoginDTO, RegisterDTO, TokenResponceDTO } from "models/auth";
+import { LoginDTO, RegisterDTO, TokenResponceDTO } from "entities/auth";
 import $api from "shared/api/axiosInstance"
 import { AUTH_LOGIN_ROUTE, AUTH_LOGOUT_ROUTE, AUTH_REFRESH_TOKEN_ROUTE, AUTH_REGISTER_USER_ROUTE } from "shared/routes/apiRoutes/authRoutes";
 import { API_AUTH } from "shared/routes/apiRoutes/routes";

@@ -1,0 +1,31 @@
+.toggleButton .p-button-icon-left {
+  margin-right: -.5rem;
+  color: #fff;
+}
+
+.p-button-label {
+  font-size: 16px;
+}
+
+.toggleButton.p-highlight{
+  background: #d32f2f !important;
+  border: 1px solid #d32f2f !important;
+}
+
+.toggleButton {
+  background: #689f38 !important;
+  border: 1px solid #689f38 !important;
+  color: #fff;
+  transition: 0.5s !important;
+}
+
+.toggleButton:focus{
+  box-shadow: 0 0 0 0.2rem #8ed488;
+}
+
+.toggleButton.p-highlight:focus{
+  background: #d32f2f !important;
+  border: 1px solid #d32f2f !important;
+  box-shadow: 0 0 0 0.2rem #ff9888;
+
+}

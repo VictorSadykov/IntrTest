@@ -46,5 +46,27 @@ namespace IntrTest.Controllers.Security
             await _coinRepository.UpdateAsync(foundCoin);
             return Ok(foundCoin);
         }
+
+        [HttpPut("updateCoins")]
+        public async Task<IActionResult> UpdateCoins([FromBody] CoinDTO[] coins)
+        {
+            foreach (var coin in coins)
+            {
+                var foundCoin = await _coinRepository.FindByValueAsync(coin.Value);
+
+                if (foundCoin == null)
+                {
+                    ModelState.AddModelError("CoinNotFound", "Такой монеты нет в базе данных.");
+                    return BadRequest(ModelState);
+                }
+
+                foundCoin.Amount = coin.Amount;
+                foundCoin.isBlocked = coin.IsBlocked;
+
+                await _coinRepository.UpdateAsync(foundCoin);
+            }
+
+            return Ok(ModelState);
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { LoginDTO, RegisterDTO } from "models/auth";
+import { LoginDTO, RegisterDTO } from "entities/auth";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import { UseFormProps, UseFormReturn } from "react-hook-form";
 import Store from "shared/store/store";

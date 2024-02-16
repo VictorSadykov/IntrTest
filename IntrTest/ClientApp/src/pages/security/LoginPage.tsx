@@ -4,7 +4,7 @@ import { LoginForm, RegistrationForm } from "widgets/index"
 import { useForm } from "react-hook-form";
 import { Card } from "primereact/card";
 import { Context } from "index";
-import { LoginDTO, RegisterDTO } from "models/auth";
+import { LoginDTO, RegisterDTO } from "entities/auth";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "shared/routes/apiRoutes/routes";
@@ -83,7 +83,7 @@ export const LoginPage = () => {
   return (
     <>
       <Toast ref={toast} position="bottom-right" />
-      <div className="login_card flex flex justify-content-center align-items-center">
+      <div className="login_card bg-red-600 flex flex justify-content-center align-items-center">
         <Card className="p-3" style={{ minWidth: '500px' }} title={isLoginToShow ? "Авторизация" : "Регистрация"}>
           {isLoginToShow ?
             <LoginForm

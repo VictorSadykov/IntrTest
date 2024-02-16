@@ -1,6 +1,7 @@
 using IntrTest.Data.Context;
 using IntrTest.Data.Models.Database;
 using IntrTest.Extensions;
+using IntrTest.Mapping;
 using IntrTest.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -49,10 +50,11 @@ builder.Services.AddControllersWithViews()
 
 
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddRepositories();
 
 var app = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 
 
@@ -74,5 +76,7 @@ app.MapControllerRoute(
 
 
 app.MapFallbackToFile("index.html");
+
+await InitData.IdentityInitialiazer(app);
 
 app.Run();

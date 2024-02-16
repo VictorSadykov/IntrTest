@@ -1,13 +1,14 @@
-import { LoginDTO } from "models/auth"
-import { AuthProps } from "models/props"
+import { LoginDTO } from "entities/auth"
+import { AuthProps } from "entities/props"
 import { Button } from "primereact/button"
 import { Card } from "primereact/card"
 import { InputText } from "primereact/inputtext"
 import { Password } from "primereact/password"
 import React, { useState } from "react"
 import { Controller, useForm } from "react-hook-form";
+import { getFormErrorMessage } from "shared/components"
 
-export const LoginForm = ({formInfo, toggleCard, getFormErrorMessage, isLoading, authFunc} : AuthProps) => {
+export const LoginForm = ({formInfo, toggleCard, isLoading, authFunc} : AuthProps) => {
   const { control, formState: { errors }, handleSubmit } = formInfo;
   
   const onSubmit = async(data) => {
@@ -37,7 +38,7 @@ export const LoginForm = ({formInfo, toggleCard, getFormErrorMessage, isLoading,
                 onChange={e => field.onChange(e.target.value)}
                 placeholder="Логин"
               />
-              {getFormErrorMessage(field.name)}
+              {getFormErrorMessage(field.name, errors)}
             </>
           }}
         />
@@ -54,7 +55,7 @@ export const LoginForm = ({formInfo, toggleCard, getFormErrorMessage, isLoading,
                 feedback={false}
                 onChange={e => field.onChange(e.target.value)}
                 placeholder="Пароль" />
-              {getFormErrorMessage(field.name)}
+              {getFormErrorMessage(field.name, errors)}
             </>
           }}
         />

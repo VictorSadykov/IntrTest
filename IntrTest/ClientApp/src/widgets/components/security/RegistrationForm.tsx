@@ -1,13 +1,14 @@
-import { RegisterDTO } from "models/auth";
-import { AuthProps } from "models/props";
+import { RegisterDTO } from "entities/auth";
+import { AuthProps } from "entities/props";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card"
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import React from "react"
 import { Controller, useForm } from "react-hook-form"
+import { getFormErrorMessage } from "shared/components";
 
-export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, isLoading, authFunc }: AuthProps) => {
+export const RegistrationForm = ({ formInfo, toggleCard, isLoading, authFunc }: AuthProps) => {
   const { control, formState: { errors }, handleSubmit } = formInfo;
 
   const onSubmit = async (data) => {   
@@ -37,7 +38,7 @@ export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, is
                 onChange={e => field.onChange(e.target.value)}
                 placeholder="Логин"
               />
-              {getFormErrorMessage(field.name)}
+              {getFormErrorMessage(field.name, errors)}
             </>
           }}
         />
@@ -55,7 +56,7 @@ export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, is
                 onChange={e => field.onChange(e.target.value)}
                 className="mb-2"
                 placeholder="Пароль" />
-              {getFormErrorMessage(field.name)}
+              {getFormErrorMessage(field.name, errors)}
             </>
           }}
         />
@@ -79,7 +80,7 @@ export const RegistrationForm = ({ formInfo, toggleCard, getFormErrorMessage, is
                 feedback={false}
                 onChange={e => field.onChange(e.target.value)}
                 placeholder="Повтор пароля" />
-              {getFormErrorMessage(field.name)}
+              {getFormErrorMessage(field.name, errors)}
             </>
           }}
         />
