@@ -1,0 +1,1 @@
+export const USER_CURRENT_BALANCE_ROUTE = "getCurrentBalance/"

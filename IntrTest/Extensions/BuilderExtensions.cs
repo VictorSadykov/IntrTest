@@ -8,6 +8,7 @@ namespace IntrTest.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<ICoinRepository, CoinRepository>();
+            services.AddTransient<IDrinkRepository, DrinkRepository>();
         }
     }
 }

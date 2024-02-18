@@ -9,6 +9,7 @@ namespace IntrTest.Mapping
         public MappingProfile()
         {
             CreateMap<Coin, CoinDTO>().ReverseMap();
+            CreateMap<AddDrinkDTO, Drink>().ReverseMap();
         }
     }
 }

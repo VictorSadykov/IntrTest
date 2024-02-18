@@ -83,8 +83,8 @@ export const LoginPage = () => {
   return (
     <>
       <Toast ref={toast} position="bottom-right" />
-      <div className="login_card bg-red-600 flex flex justify-content-center align-items-center">
-        <Card className="p-3" style={{ minWidth: '500px' }} title={isLoginToShow ? "Авторизация" : "Регистрация"}>
+      <div className="login_card flex flex justify-content-center align-items-center">
+        <Card className="p-3 shadow-4" style={{ minWidth: '500px' }} title={isLoginToShow ? "Авторизация" : "Регистрация"}>
           {isLoginToShow ?
             <LoginForm
               formInfo={formInfo}

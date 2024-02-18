@@ -115,6 +115,9 @@ namespace IntrTest.Data.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<decimal>("CurrentBalance")
+                        .HasColumnType("numeric");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");

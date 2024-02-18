@@ -8,9 +8,10 @@ import { LayoutCommon, LayoutSecurity } from "shared/components";
 export const router = createBrowserRouter(createRoutesFromElements(
   <>
     <Route path='/' element={<RouteAuth jsx={<LayoutSecurity />} />}>
-      <Route index element={<RouteAuth jsx={<AdminPage/>} />} />
+      <Route path="admin" element={<RouteAuth jsx={<AdminPage />} />} />
+      <Route index element={<RouteAuth jsx={<ShopPage />} />} />
     </Route>
     <Route path='/security' element={<RouteAnonymous jsx={<LayoutCommon />} />}>
-      <Route path='login' element={<RouteAnonymous jsx={<LoginPage/>} />} />
+      <Route path='login' element={<RouteAnonymous jsx={<LoginPage />} />} />
     </Route>
   </>))

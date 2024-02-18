@@ -47,7 +47,7 @@ export const CoinPanel = ({toastRef} : CoinPanelProps) => {
   }
 
   const amountBody = (coin: Coin) => {
-    return <InputNumber disabled={isWaitingForResponse} value={coin.amount} allowEmpty={false} onValueChange={(e) => onAmounChange(coin, e.value)} locale="ru-RU" showButtons buttonLayout="horizontal" style={{ width: '4rem' }}
+    return <InputNumber disabled={isWaitingForResponse} value={coin.amount} allowEmpty={false} onValueChange={(e) => onAmountChange(coin, e.value)} locale="ru-RU" showButtons buttonLayout="horizontal" style={{ width: '4rem' }}
       decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" min={0} max={10000} />
   }
 
@@ -56,7 +56,7 @@ export const CoinPanel = ({toastRef} : CoinPanelProps) => {
     setIsChanged(true)
   }
 
-  const onAmounChange = (coin: Coin, amount: number) => {
+  const onAmountChange = (coin: Coin, amount: number) => {
     setCoins(coins.map(x => x.value === coin.value ? { ...x, amount: amount } : x))
     setIsChanged(true)
   }

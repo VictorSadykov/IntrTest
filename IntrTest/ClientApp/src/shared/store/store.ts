@@ -43,6 +43,7 @@ export default class Store {
       throw (ex as AxiosError)?.response
     }
   }
+  
 
   async logout() {
     const response = await authService.logout()

@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace IntrTest.Controllers.Security
 {
-    [Authorize]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -34,7 +34,6 @@ namespace IntrTest.Controllers.Security
             _config = config;
         }
 
-        [AllowAnonymous]
         [HttpPost("registerUser")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO model)
         {
@@ -52,7 +51,6 @@ namespace IntrTest.Controllers.Security
             return Ok(ModelState);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO model)
         {
@@ -111,7 +109,6 @@ namespace IntrTest.Controllers.Security
            
         }
 
-        [AllowAnonymous]
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken(TokenValidationDTO tokenModel)
         {

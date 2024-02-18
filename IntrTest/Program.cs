@@ -52,6 +52,7 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddRepositories();
+builder.Services.AddTransient<FileService>();
 
 var app = builder.Build();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -64,11 +65,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(builder => builder.AllowAnyOrigin());
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
