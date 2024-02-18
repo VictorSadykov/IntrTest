@@ -1,4 +1,5 @@
 export {AuthProps} from "./AuthProps"
 export {CoinPanelProps} from "./CoinPanelProps"
 export {DrinkDialogProps} from "./DrinkDialogProps"
-export {MyToastProps} from "./MyToastProps"
+export {MyDialogProps} from "./MyToastProps"
+export {ChangeDialogProps} from "./ChangeDialogProps"

@@ -1,5 +1,5 @@
-import { Coin, InsertCoinsDTO, getAllCoinsAsync } from "entities/coin"
-import { MyToastProps } from "entities/props"
+import { Coin, InsertCoinsDTO, getAllCoinsAsync, insertCoinsAsync } from "entities/coin"
+import { MyDialogProps } from "entities/props"
 import { Button } from "primereact/button"
 import { Column } from "primereact/column"
 import { DataTable } from "primereact/datatable"
@@ -8,7 +8,7 @@ import { InputNumber } from "primereact/inputnumber"
 import { ProgressSpinner } from "primereact/progressspinner"
 import React, { useEffect, useState } from "react"
 
-export const CoinDialog = ({ visible, setVisible, toastRef, userId}: MyToastProps) => {
+export const CoinDialog = ({ visible, setVisible, toastRef, userId, updateUserBalance}: MyDialogProps) => {
   const [coins, setCoins] = useState<Coin[]>()
   const [isLoading, setIsLoading] = useState<boolean>()
 
@@ -53,10 +53,11 @@ export const CoinDialog = ({ visible, setVisible, toastRef, userId}: MyToastProp
     }
 
     try {
-      const insertCoinsDto : InsertCoinsDTO = coins.map(x => ({value: x.value, amount: x.amount}))
+      const insertCoinsDto : InsertCoinsDTO[] = coins.map(x => ({value: x.value, amount: x.amount}))
 
       const r = await insertCoinsAsync(userId, insertCoinsDto)
       toastRef.current.show({severity: "success", summary: "Монеты внесены"})
+      updateUserBalance(userId)
       setVisible(false)
     } catch (ex) {
       toastRef.current.show({severity: "error", summary: "Ошибка на стороне сервера"})

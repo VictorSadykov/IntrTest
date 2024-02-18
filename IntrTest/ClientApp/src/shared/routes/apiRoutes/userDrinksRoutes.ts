@@ -1,0 +1,1 @@
+export const USERDRINKS_ADD_ROUTE = "addDrinkToBasket/"

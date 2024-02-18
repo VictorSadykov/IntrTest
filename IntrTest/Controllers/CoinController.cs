@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IntrTest.Controllers.Security
+namespace IntrTest.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -46,7 +46,9 @@ namespace IntrTest.Controllers.Security
 
             foreach (var coin in insertedCoins)
             {
-
+                var foundCoin = await _coinRepository.FindByValueAsync(coin.Value);
+                foundCoin.Amount += coin.Amount;
+                await _coinRepository.UpdateAsync(foundCoin);
             }
 
             var sum = 0;
@@ -58,6 +60,85 @@ namespace IntrTest.Controllers.Security
 
             foundUser.CurrentBalance += sum;
             await _userManager.UpdateAsync(foundUser);
+
+            return Ok(ModelState);
+        }
+
+        [HttpPut("giveChange/{userId}")]
+        public async Task<IActionResult> GiveChange([FromRoute] string userId)
+        {
+            var foundUser = await _userManager.FindByIdAsync(userId);
+
+            if (foundUser == null)
+            {
+                ModelState.AddModelError("UserNotFound", "Пользователя с таким id нет в БД");
+                return BadRequest(ModelState);
+            }
+
+            var coins = await _coinRepository.GetAllAsync();
+
+            coins.Sort((x, y) => y.Value.CompareTo(x.Value));
+
+            var curBalance = foundUser.CurrentBalance;
+            var coinsRemains = new Dictionary<int, int>();
+            var coinsToGive = new Dictionary<int, int>();
+            var changeInSum = 0;
+            foreach (var coin in coins)
+            {
+                coinsRemains.Add(coin.Value, coin.Amount);
+                coinsToGive.Add(coin.Value, 0);
+            }
+
+            foreach (var coin in coinsRemains)
+            {
+                int coinValue = coin.Key;
+                int coinAmount = coin.Value;
+
+                while (coinAmount > 0 && curBalance - coinValue >= 0)
+                {
+                    curBalance -= coinValue;
+                    changeInSum += coinValue;
+                    coinsRemains[coinValue]--;
+                    coinsToGive[coinValue]++;
+
+                    coinAmount--;
+
+                    if (curBalance == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            foreach (var coin in coinsRemains)
+            {
+                var foundCoin = await _coinRepository.FindByValueAsync(coin.Key);
+                foundCoin.Amount = coin.Value;
+                await _coinRepository.UpdateAsync(foundCoin);
+            }
+
+            foundUser.CurrentBalance = curBalance;
+            await _userManager.UpdateAsync(foundUser);
+
+            List<InsertCoinsDTO> coinsOuted = new List<InsertCoinsDTO>();
+
+            foreach (var coin in coinsToGive)
+            {
+                coinsOuted.Add(new InsertCoinsDTO()
+                {
+                    Value = coin.Key,
+                    Amount = coin.Value,
+                });
+            }
+
+            var resp = new CoinChangeDTO
+            {
+                CurrentUserBalance = curBalance,
+                ChangeInSum = changeInSum,
+                CoinsOuted = coinsOuted
+            };
+
+            return Ok(resp);
         }
 
         [HttpPut("updateCoinByValue/{value}")]
@@ -73,7 +154,7 @@ namespace IntrTest.Controllers.Security
 
             foundCoin.Amount = coin.Amount;
             foundCoin.isBlocked = coin.IsBlocked;
-            
+
             await _coinRepository.UpdateAsync(foundCoin);
             return Ok(foundCoin);
         }

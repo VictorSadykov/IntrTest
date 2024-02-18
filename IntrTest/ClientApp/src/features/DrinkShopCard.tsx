@@ -3,9 +3,15 @@ import { Button } from "primereact/button"
 import { Card } from "primereact/card"
 import React from "react"
 import "./css/DrinkShopCard.css"
+import authService from "shared/services/auth.service"
 
 
-export const DrinkShopCard = ({ item }) => {
+export const DrinkShopCard = ({ item } : {item: Drink}) => {
+  const addDrinkToBasket = async () => {
+    let userId = await authService.getUser().userId
+    await addDrinkToBasketAsync(userId, item.id)
+  }
+
   return (
     <div className="col-4 flex justify-content-center drinkCard mb-5">
       <Card style={{ width: '500px' }} className="shadow-2">
@@ -24,7 +30,7 @@ export const DrinkShopCard = ({ item }) => {
             </div>
             <div className="">
               <Button className="mr-2" label="Купить" />
-              <Button outlined label="В корзину" />
+              <Button outlined label="В корзину" onClick={addDrinkToBasket}/>
             </div>
           </div>
         </div>

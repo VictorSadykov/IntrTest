@@ -14,7 +14,7 @@ namespace IntrTest.Data.Models.Database
         public string UserId { get; set; }
         public User User { get; set; }
         public int DrinkId { get; set; }
-        public Drink Coin { get; set; }
+        public Drink Drink { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
     }

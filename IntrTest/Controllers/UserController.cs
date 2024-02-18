@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IntrTest.Controllers.Security
+namespace IntrTest.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

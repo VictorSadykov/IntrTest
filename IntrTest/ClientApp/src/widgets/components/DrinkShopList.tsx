@@ -7,7 +7,7 @@ export const DrinkShopList = () => {
   const [drinksPaged, setDrinksPaged] = useState<DrinksPaged>()
   const [drinks, setDrinks] = useState<Drink[]>()
   const [firstRow, setFirstRow] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(6)
+  const [rowsPerPage, setRowsPerPage] = useState(9)
   const [totalRows, setTotalRows] = useState(0)
 
 
@@ -27,7 +27,6 @@ export const DrinkShopList = () => {
 
   const onPageChange = async (event) => {
     setFirstRow(event.first)
-    setRowsPerPage(event.rows)
 
 
     const resp = await getDrinksPagedAsync(event.page + 1, rowsPerPage)
@@ -36,7 +35,6 @@ export const DrinkShopList = () => {
 
   const updatePaginatorInfo = (drinksPaged: DrinksPaged) => {
     setFirstRow(drinksPaged.firstRowOnPage)
-    setRowsPerPage(drinksPaged.pageSize)
     setTotalRows(drinksPaged.rowCount)
   }
 

@@ -6,7 +6,7 @@ using IntrTest.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IntrTest.Controllers.Security
+namespace IntrTest.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -84,7 +84,7 @@ namespace IntrTest.Controllers.Security
 
             var isAnyDrinkUsesImageUrl = await _drinkRepository.IsManyDrinksUsesImageUrl(foundDrink.ImageUrl);
 
-            if (!isAnyDrinkUsesImageUrl) 
+            if (!isAnyDrinkUsesImageUrl)
             {
                 await _fileService.DeleteImage(foundDrink.ImageUrl);
             }

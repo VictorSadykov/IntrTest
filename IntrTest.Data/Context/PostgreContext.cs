@@ -14,7 +14,6 @@ namespace IntrTest.Data.Context
     public class PostgreContext : IdentityDbContext<User, IdentityRole, string>
     {
         public DbSet<Coin> Coins { get; set; }
-        public DbSet<UserCoin> UserCoins { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserDrink> UserDrinks { get; set; }
         public DbSet<Drink> Drinks { get; set; }

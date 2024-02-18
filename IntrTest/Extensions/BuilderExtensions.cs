@@ -9,6 +9,7 @@ namespace IntrTest.Extensions
         {
             services.AddTransient<ICoinRepository, CoinRepository>();
             services.AddTransient<IDrinkRepository, DrinkRepository>();
+            services.AddTransient<IUserDrinkRepository, UserDrinkRepository>();
         }
     }
 }
