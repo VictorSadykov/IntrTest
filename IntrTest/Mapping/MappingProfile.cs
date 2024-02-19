@@ -10,6 +10,7 @@ namespace IntrTest.Mapping
         {
             CreateMap<Coin, CoinDTO>().ReverseMap();
             CreateMap<AddDrinkDTO, Drink>().ReverseMap();
+            CreateMap<UserDrink, UserDrinkDTO>().ReverseMap();
         }
     }
 }

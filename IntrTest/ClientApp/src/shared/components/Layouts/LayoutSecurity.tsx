@@ -1,12 +1,25 @@
+import { IUserInfo } from "entities/user";
 import { Context } from "index";
-import React, { useContext } from "react"
+import { UserInfo } from "os";
+import React, { useContext, useEffect, useState } from "react"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
+import { ROLE_ADMIN } from "shared/const/role";
 import { NAV_ADMIN, NAV_LOGIN, NAV_SHOP } from "shared/routes/pageRoutes";
+import authService from "shared/services/auth.service";
 
 export const LayoutSecurity = () => {
   const { store } = useContext(Context);
   const navigate = useNavigate()
   const location = useLocation()
+  const [user, setUser] = useState<IUserInfo>()
+  useEffect(() => {
+    (async () => {
+      const resp = await authService.getUser()
+      setUser(resp)
+      console.log(resp)
+      resp?.role?.includes(ROLE_ADMIN) 
+    })()
+  }, [])
 
   const handleLogout = async () => {
     await store.logout()
@@ -15,7 +28,7 @@ export const LayoutSecurity = () => {
 
   const backToStore = () => {
     let route = location.pathname
-    
+
     navigate(route === NAV_ADMIN ? NAV_SHOP : NAV_ADMIN)
   }
 
@@ -30,11 +43,13 @@ export const LayoutSecurity = () => {
             Vending Test
           </div>
         </div>
-        <div className="flex justify-content-between flex-grow-1 align-items-center text-2xl mt-2 ml-8 ">
-          <div className="cursor-pointer" onClick={backToStore}>
-            {location.pathname === NAV_ADMIN ? "Вернуться в магазин" : "Войти в панель админа"}
-          </div>
-          <div onClick={handleLogout} className="cursor-pointer">
+        <div className={user?.role?.includes(ROLE_ADMIN) ? "flex flex-row m-3 justify-content-between align-items-center" :  "m-3" }>
+          {user?.role?.includes(ROLE_ADMIN) &&
+            <div className="cursor-pointer layout_exit mr-8" onClick={backToStore}>
+              {location.pathname === NAV_ADMIN ? "Вернуться в магазин" : "Войти в панель админа"}
+            </div>
+          }
+          <div onClick={handleLogout} className="cursor-pointer layout_exit">
             Выход
           </div>
         </div>

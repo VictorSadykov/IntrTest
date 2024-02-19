@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using IntrTest.Const;
 using IntrTest.Data.Models.Database;
 using IntrTest.Data.Models.DTO;
 using IntrTest.Data.Models.Repositories.Interfaces;
+using IntrTest.Data.Models.Repositories.Real;
 using IntrTest.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntrTest.Controllers
@@ -16,8 +19,9 @@ namespace IntrTest.Controllers
         private readonly IDrinkRepository _drinkRepository;
         private readonly IMapper _mapper;
         private readonly FileService _fileService;
+        
 
-        public DrinkController(IDrinkRepository? drinkRepository, IMapper? mapper, FileService? fileService)
+        public DrinkController(IDrinkRepository? drinkRepository, IMapper? mapper, FileService? fileService, UserManager<User> userManager)
         {
             _drinkRepository = drinkRepository;
             _mapper = mapper;
@@ -33,6 +37,7 @@ namespace IntrTest.Controllers
             return Ok(drinks);
         }
 
+        [Authorize(Roles = Roles.ADMIN)]
         [HttpPost("addDrink")]
         public async Task<IActionResult> Add([FromForm] AddDrinkDTO drink)
         {
@@ -44,6 +49,21 @@ namespace IntrTest.Controllers
             return Ok();
         }
 
+        [HttpGet("getDrinkAvailability/{drinkId}")]
+        public async Task<IActionResult> GetDrinkAvailability([FromRoute] int drinkId)
+        {
+            var foundDrink = await _drinkRepository.GetByIdAsync(drinkId);
+
+            if (foundDrink == null)
+            {
+                ModelState.AddModelError("drinkNotFound", "Напитка с таким id нет в БД");
+                return BadRequest(ModelState);
+            }
+
+            return Ok(foundDrink.Amount);
+        }
+
+        [Authorize(Roles = Roles.ADMIN)]
         [HttpGet("exportDrinks")]
         public async Task<IActionResult> ExportDrinks()
         {
@@ -53,6 +73,7 @@ namespace IntrTest.Controllers
             return PhysicalFile(file.filePath, file.fileType, file.fileName);
         }
 
+        [Authorize(Roles = Roles.ADMIN)]
         [HttpPost("importDrinks")]
         public async Task<IActionResult> ImportDrinks([FromForm] IFormFile file)
         {

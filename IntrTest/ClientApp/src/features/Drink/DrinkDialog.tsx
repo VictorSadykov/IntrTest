@@ -124,8 +124,6 @@ export const DrinkDialog = ({ visible, setVisible, toastRef, drinkForEdition, se
                   className="mb-2"
                   onChange={e => field.onChange(e.value)}
                   placeholder="Введите цену"
-                  mode="currency"
-                  currency="RUB"
                   locale="ru-RU"
                   min={1}
                   max={100000}

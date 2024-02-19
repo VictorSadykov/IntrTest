@@ -5,6 +5,7 @@ export {importDrinksAsync} from "./api/importDrinksAsync"
 export {deleteDrinkAsync} from "./api/deleteDrinkAsync"
 export {editDrinkAsync} from "./api/editDrinkAsync"
 export {getDrinksPagedAsync} from "./api/getDrinksPagedAsync"
+export {checkDrinkAmountAvailable} from "./api/checkDrinkAmountAvailable"
 
 export type {Drink} from "./models/Drink"
 export type {AddDrinkDTO} from "./models/AddDrinkDTO"

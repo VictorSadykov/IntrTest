@@ -36,12 +36,16 @@ builder.Services.AddAuthentication(option =>
 {
     options.TokenValidationParameters = new TokenValidationParameters()
     {
+        ValidateActor = true,
+        RequireExpirationTime = true,
         ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         NameClaimType = JwtService.JWT_NAME,
-        RoleClaimType = JwtService.JWT_ROLE
+        ClockSkew = Debugger.IsAttached ? TimeSpan.Zero : TimeSpan.FromMinutes(5),
+
     };
 });
 builder.Services.AddControllersWithViews()

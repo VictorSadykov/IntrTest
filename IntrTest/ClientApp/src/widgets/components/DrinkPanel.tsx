@@ -5,7 +5,7 @@ import { DataTable } from "primereact/datatable"
 import { ProgressSpinner } from "primereact/progressspinner"
 import React, { useEffect, useRef, useState } from "react"
 import { Dialog } from 'primereact/dialog';
-import { DrinkDialog } from "features/DrinkDialog"
+import { DrinkDialog } from "features/Drink/DrinkDialog"
 import { Drink, deleteDrinkAsync, exportDrinksAsync, getAllDrinksAsync, importDrinksAsync } from "entities/drink"
 import dayjs from "dayjs"
 import { FileUpload } from "primereact/fileupload"
@@ -48,7 +48,7 @@ export const DrinkPanel = ({ toastRef }: CoinPanelProps) => {
   }
 
   const imageBodyTemplate = (drink: Drink) => {
-    return <img style={{ maxHeight: "150px" }} src={`https://localhost:7191/${drink.imageUrl}`} alt="" />
+    return <div className="flex justfiy-content-center align-items-center"><img style={{ maxHeight: "150px", margin: '0 auto' }} src={`https://localhost:7191/${drink.imageUrl}`} alt="" /></div>
   }
 
   const buttonsBodyTemplate = (drink: Drink) => {

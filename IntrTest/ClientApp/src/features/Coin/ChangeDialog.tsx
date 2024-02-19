@@ -41,7 +41,7 @@ export const ChangeDialog = ({ visible, setVisible, toastRef, userId, userBalanc
 
   const footerContent = (
     <div>
-      <Button severity="danger" label="Отмена" onClick={() => setVisible(false)} />
+      <Button severity="danger" label="Закрыть" onClick={() => setVisible(false)} />
     </div>
   )
 

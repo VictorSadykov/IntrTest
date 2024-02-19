@@ -1,16 +1,31 @@
 import { Card } from "primereact/card"
-import React, { useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { TabView, TabPanel } from 'primereact/tabview';
 import LocalDrinkIcon from '@mui/icons-material/LocalDrink';
 import PaidIcon from '@mui/icons-material/Paid';
 import { CoinPanel } from "widgets/components/CoinPanel";
 import { Toast } from "primereact/toast";
 import { DrinkPanel } from "widgets/components/DrinkPanel";
+import { IUserInfo } from "entities/user";
+import authService from "shared/services/auth.service";
+import { ROLE_ADMIN } from "shared/const/role";
+import { useNavigate } from "react-router-dom";
 
 
 
 export const AdminPage = () => {
   const toast = useRef(null)
+
+  const [user, setUser] = useState<IUserInfo>()
+  const navigate = useNavigate()
+  useEffect(() => {
+    (async () => {
+      const resp = await authService.getUser()
+      if(!resp.role.includes(ROLE_ADMIN)) {
+        navigate("/")
+      }
+    })()
+  }, [])
   
   return (
     <>

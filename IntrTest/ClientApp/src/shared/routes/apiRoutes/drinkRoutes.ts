@@ -5,3 +5,4 @@ export const DRINK_IMPORT_ROUTE = "importDrinks/"
 export const DRINK_DELETE_ROUTE = "deleteDrink/"
 export const DRINK_EDIT_ROUTE = "editDrink/"
 export const DRINKS_PAGED_ROUTE = 'getPagedDrinks'
+export const DRINKS_AVAILABILITY_ROUTE = 'getDrinkAvailability/'
